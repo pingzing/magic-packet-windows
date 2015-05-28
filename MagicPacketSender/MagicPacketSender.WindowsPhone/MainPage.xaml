@@ -1,0 +1,44 @@
+﻿<Page
+    x:Class="MagicPacketSender.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MagicPacketSender"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="magic packet" Style="{StaticResource HeaderTextBlockStyle}" Margin="12"/>
+        <StackPanel Margin="12,12,12,0" Grid.Row="1">
+            <TextBlock Text="Hostname or IP Address" Style="{StaticResource ControlContextualInfoTextBlockStyle}"/>
+            <TextBox x:Name="HostnameBox" InputScope="Url"/>
+            <TextBlock Text="Port Number" Style="{StaticResource ControlContextualInfoTextBlockStyle}"/>
+            <TextBox x:Name="PortNumberBox" InputScope="Number"/>
+            <TextBlock Text="MAC Address" Style="{StaticResource ControlContextualInfoTextBlockStyle}"/>
+            <TextBox x:Name="MacAddressBox" MaxLength="17"/>
+            <Button Content="Send" HorizontalAlignment="Stretch" Click="Button_Click"/>
+        </StackPanel>
+        
+        <ListView Grid.Row="2" ItemsSource="{Binding RecentRequests}" SelectionChanged="ListView_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock>
+                            <Run Text="{Binding RequestHostName}"/>
+                            <Run Text=":"/>
+                            <Run Text="{Binding Port}"/>
+                        </TextBlock>
+                        <TextBlock Text="{Binding MacAddress}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </Grid>
+</Page>
