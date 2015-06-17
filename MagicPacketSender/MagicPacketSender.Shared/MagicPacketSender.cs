@@ -16,7 +16,14 @@ namespace MagicPacketSender
     {        
         public event TypedEventHandler<DatagramSocket, DatagramSocketMessageReceivedEventArgs> OnSocketMessageReceived;
 
-        public async Task SendMagicPacket(Windows.Networking.HostName destination, uint destinationPort, string targetMac)
+        /// <summary>
+        /// Attempts to send a magic packet to the desination hostname, on the specified port with the specified MAC address.
+        /// </summary>
+        /// <param name="destination">Destination hostname or IP address.</param>
+        /// <param name="destinationPort">Destination port number.</param>
+        /// <param name="targetMac">Destination MAC address. Bytes can be separated by colons, dashes, or nothing.</param>
+        /// <returns>True if magic packet is sent successfully, false otherwise.</returns>
+        public async Task<bool> SendMagicPacket(Windows.Networking.HostName destination, uint destinationPort, string targetMac)
         {
             try
             {
@@ -64,12 +71,14 @@ namespace MagicPacketSender
                         writer.WriteBytes(magicPacket.ToArray<byte>());
                         await writer.StoreAsync();
                         await writer.FlushAsync();
+                        return true;
                     }
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
+                return false;
             }
         }
 

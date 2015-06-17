@@ -12,29 +12,31 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="magic packet" Style="{StaticResource HeaderTextBlockStyle}" Margin="12"/>
         <StackPanel Margin="12,12,12,0" Grid.Row="1">
             <TextBlock Text="Hostname or IP Address" Style="{StaticResource ControlContextualInfoTextBlockStyle}"/>
-            <TextBox x:Name="HostnameBox" InputScope="Url"/>
+            <TextBox x:Name="HostnameBox" InputScope="Url" LostFocus="HostnameBox_LostFocus" />
             <TextBlock Text="Port Number" Style="{StaticResource ControlContextualInfoTextBlockStyle}"/>
-            <TextBox x:Name="PortNumberBox" InputScope="Number"/>
+            <TextBox x:Name="PortNumberBox" InputScope="Number" LostFocus="PortNumberBox_LostFocus"/>
             <TextBlock Text="MAC Address" Style="{StaticResource ControlContextualInfoTextBlockStyle}"/>
-            <TextBox x:Name="MacAddressBox" MaxLength="17"/>
-            <Button Content="Send" HorizontalAlignment="Stretch" Click="Button_Click"/>
+            <TextBox x:Name="MacAddressBox" MaxLength="17" LostFocus="MacAddressBox_LostFocus"/>
+            <Button Content="Send" HorizontalAlignment="Stretch" Click="Button_Click" IsEnabled="{Binding IsSendButtonEnabled}"/>
         </StackPanel>
         
-        <ListView Grid.Row="2" ItemsSource="{Binding RecentRequests}" SelectionChanged="ListView_SelectionChanged">
+        <TextBlock Grid.Row="2" Text="Recent" Style="{StaticResource GroupHeaderTextBlockStyle}" Margin="12"/>
+        <ListView Grid.Row="3" ItemsSource="{Binding RecentRequests}" SelectionChanged="ListView_SelectionChanged" Margin="12,0,12,0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock>
+                        <TextBlock Style="{StaticResource ListViewItemContentTextBlockStyle}">
                             <Run Text="{Binding RequestHostName}"/>
                             <Run Text=":"/>
                             <Run Text="{Binding Port}"/>
                         </TextBlock>
-                        <TextBlock Text="{Binding MacAddress}"/>
+                        <TextBlock Text="{Binding MacAddress}" Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

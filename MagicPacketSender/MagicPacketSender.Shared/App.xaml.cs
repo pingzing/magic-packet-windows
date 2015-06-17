@@ -7,6 +7,8 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -37,7 +39,15 @@ namespace MagicPacketSender
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+            this.UnhandledException += App_UnhandledException;
         }
+
+        private async void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageDialog dialog = new MessageDialog("Oops! Unhandled exception.\nDetails: " + e.ToString());
+            await dialog.ShowAsync();
+        }
+        
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -45,14 +55,14 @@ namespace MagicPacketSender
         /// search results, and so forth.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
-#endif
+#endif           
 
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -90,8 +100,13 @@ namespace MagicPacketSender
 
                 rootFrame.ContentTransitions = null;
                 rootFrame.Navigated += this.RootFrame_FirstNavigated;
-#endif
 
+                StatusBar statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
+
+                // Hide the status bar
+                await statusBar.HideAsync();
+#endif
+               
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter

@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Coding4Fun.Toolkit.Controls;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Networking;
-using Windows.Networking.Sockets;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -28,6 +18,17 @@ namespace MagicPacketSender
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
         
+        private bool isSendButtonEnabled = false;
+        public bool IsSendButtonEnabled
+        {
+            get { return isSendButtonEnabled; }
+            set
+            {
+                isSendButtonEnabled = value;
+                OnPropertyChanged("IsSendButtonEnabled");
+            }
+        }
+
         private ObservableCollection<RequestInfo> recentRequests = new ObservableCollection<RequestInfo>();
         public  ObservableCollection<RequestInfo> RecentRequests
         {
@@ -74,16 +75,45 @@ namespace MagicPacketSender
             string macAddress = MacAddressBox.Text;            
 
             MagicPacketSender magicSender = new MagicPacketSender();            
-            await magicSender.SendMagicPacket(targetHost, port, macAddress);
+            bool success = await magicSender.SendMagicPacket(targetHost, port, macAddress);
 
             RequestInfo info = new RequestInfo
+            (
+                HostnameBox.Text,
+                Convert.ToUInt32(PortNumberBox.Text),
+                MacAddressBox.Text
+            );
+
+            if (!RecentRequests.Contains(info))
             {
-                RequestHostName = HostnameBox.Text,
-                MacAddress = MacAddressBox.Text,
-                Port = Convert.ToUInt32(PortNumberBox.Text)
-            };
-            RecentRequests.Add(info);
-            await FileUtils.SaveRequestInfo(RecentRequests.ToList());
+                if(RecentRequests.Count > 20)
+                {
+                    for(int i = 20; i <= RecentRequests.Count; i++)
+                    {
+                        RecentRequests.RemoveAt(i);
+                    }
+                }
+                RecentRequests.Insert(0, info);
+                await FileUtils.SaveRequestInfo(RecentRequests.ToList());
+            }
+            if(success)
+            {
+                ToastPrompt toast = new ToastPrompt();
+                toast.Title = "Magic Packet";
+                toast.Message = "Magic packet sent!";
+                toast.TextOrientation = Orientation.Horizontal;
+                toast.MillisecondsUntilHidden = 3000;
+                toast.Show();
+            }
+            else
+            {
+                ToastPrompt toast = new ToastPrompt();
+                toast.Title = "Magic Packet";
+                toast.Message = "Sending failed! =(";
+                toast.TextOrientation = Orientation.Horizontal;
+                toast.MillisecondsUntilHidden = 3000;
+                toast.Show();
+            }
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -95,6 +125,7 @@ namespace MagicPacketSender
                 PortNumberBox.Text = info.Port.ToString();
                 MacAddressBox.Text = info.MacAddress;
             }
+            UpdateSendButtonEnabled();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -105,6 +136,35 @@ namespace MagicPacketSender
             {
                 handler(this, new PropertyChangedEventArgs(name));
             }
+        }
+
+        private void UpdateSendButtonEnabled()
+        {
+            if(!String.IsNullOrWhiteSpace(HostnameBox.Text)
+                && !String.IsNullOrWhiteSpace(PortNumberBox.Text)
+                && !String.IsNullOrWhiteSpace(MacAddressBox.Text))
+            {
+                IsSendButtonEnabled = true;
+            }
+            else
+            {
+                IsSendButtonEnabled = false;
+            }
+        }
+
+        private void HostnameBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            UpdateSendButtonEnabled();
+        }
+
+        private void PortNumberBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            UpdateSendButtonEnabled();
+        }
+
+        private void MacAddressBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            UpdateSendButtonEnabled();
         }
     }
 }
