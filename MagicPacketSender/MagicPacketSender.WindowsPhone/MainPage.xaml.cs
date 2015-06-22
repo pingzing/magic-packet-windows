@@ -6,6 +6,7 @@ using System.Linq;
 using Windows.Networking;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -118,6 +119,11 @@ namespace MagicPacketSender
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(e.AddedItems.Count <= 0)
+            {
+                return;
+            }
+
             RequestInfo info = e.AddedItems[0] as RequestInfo;
             if(info != null)
             {
@@ -126,6 +132,7 @@ namespace MagicPacketSender
                 MacAddressBox.Text = info.MacAddress;
             }
             UpdateSendButtonEnabled();
+            (sender as ListView).SelectedItem = null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -165,6 +172,23 @@ namespace MagicPacketSender
         private void MacAddressBox_LostFocus(object sender, RoutedEventArgs e)
         {
             UpdateSendButtonEnabled();
+        }
+
+        private void MenuFlyoutDelete_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            var itemToRemove = (e.OriginalSource as MenuFlyoutItem).DataContext;
+            RecentRequests.Remove(itemToRemove as RequestInfo);
+        }
+
+        private void StackPanel_Holding(object sender, Windows.UI.Xaml.Input.HoldingRoutedEventArgs e)
+        {
+            if(e.HoldingState == Windows.UI.Input.HoldingState.Started)
+            {
+                FrameworkElement senderElement = sender as FrameworkElement;
+                FlyoutBase flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
+
+                flyoutBase.ShowAt(senderElement);
+            }
         }
     }
 }
