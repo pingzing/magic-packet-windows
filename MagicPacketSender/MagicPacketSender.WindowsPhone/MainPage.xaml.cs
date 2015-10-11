@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Windows.Networking;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -71,7 +72,18 @@ namespace MagicPacketSender
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            HostName targetHost = new HostName(HostnameBox.Text);
+            HostName targetHost;
+            try
+            {
+                targetHost = new HostName(HostnameBox.Text);
+            }
+            catch (ArgumentException ex)
+            {
+                MessageDialog errorDialog = new MessageDialog("You've entered an invalid hostname or IP address.\nNote that the hostname field should not contain port numbers.");
+                errorDialog.Title = "Invalid Hostname or IP address";
+                await errorDialog.ShowAsync();
+                return;
+            }
             uint port = Convert.ToUInt32(PortNumberBox.Text);
             string macAddress = MacAddressBox.Text;            
 
