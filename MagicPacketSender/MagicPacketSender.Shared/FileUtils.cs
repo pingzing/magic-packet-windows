@@ -34,6 +34,8 @@ namespace MagicPacketSender
             return null;
         }
 
+        #region StorageFolder extension methods
+
         public static async Task<IStorageItem> TryGetItemAsync(this StorageFolder folder, string fileName)
         {
             var files = await folder.GetItemsAsync();
@@ -46,5 +48,7 @@ namespace MagicPacketSender
             var item = await folder.TryGetItemAsync(fileName);
             return item != null;
         }
+
+        #endregion
     }
 }

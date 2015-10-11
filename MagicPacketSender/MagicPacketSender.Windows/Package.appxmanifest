@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="10707NeilApps.MagicPacketSender" Publisher="CN=B458EF9C-1F3A-4DD2-AB1A-76FB5056CF30" Version="1.1.0.0" />
+  <Identity Name="10707NeilApps.MagicPacketSender" Publisher="CN=B458EF9C-1F3A-4DD2-AB1A-76FB5056CF30" Version="1.1.0.6" />
   <Properties>
     <DisplayName>Magic Packet Sender</DisplayName>
     <PublisherDisplayName>NeilApps</PublisherDisplayName>

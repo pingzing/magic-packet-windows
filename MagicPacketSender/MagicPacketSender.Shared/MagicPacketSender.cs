@@ -27,9 +27,7 @@ namespace MagicPacketSender
         {
             try
             {
-                DatagramSocket _socket = new DatagramSocket();
-
-                _socket.MessageReceived += _socket_MessageReceived;
+                DatagramSocket _socket = new DatagramSocket();               
 
                 using (var stream = await _socket.GetOutputStreamAsync(destination, destinationPort.ToString()))
                 {
@@ -52,15 +50,16 @@ namespace MagicPacketSender
                     }
                     else
                     {
+                        //Jump through MAC-string, reading 2 chars at a time
                         macAsArray = Enumerable.Range(0, targetMac.Length)
                             .Where(x => x % 2 == 0)
-                            .Select(x => Convert.ToByte(targetMac.Substring(x, 2), 16))
+                            .Select(x => Convert.ToByte(targetMac.Substring(x, 2), 16)) //16 = hexadecimal
                             .ToArray();
                     }
 
                     List<byte> magicPacket = new List<byte> { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
-                    //Append MAC address to the magic packet 16 times.
+                    //A WoLAN magic packet is just FF FF FF FF FF FF, then the target MAC adress repeated 16 times.
                     for (int i = 0; i < 16; i++)
                     {
                         magicPacket = magicPacket.Concat(macAsArray).ToList();
@@ -79,15 +78,6 @@ namespace MagicPacketSender
             {
                 Debug.WriteLine(e);
                 return false;
-            }
-        }
-
-        void _socket_MessageReceived(DatagramSocket sender, DatagramSocketMessageReceivedEventArgs args)
-        {
-            var eventHandler = OnSocketMessageReceived;
-            if (eventHandler != null)
-            {
-                OnSocketMessageReceived(sender, args);
             }
         }       
     }

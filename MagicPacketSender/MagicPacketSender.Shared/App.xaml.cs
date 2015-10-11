@@ -18,23 +18,14 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
-
 namespace MagicPacketSender
-{
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
+{    
     public sealed partial class App : Application
     {
 #if WINDOWS_PHONE_APP
         private TransitionCollection transitions;
 #endif
-
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
+                
         public App()
         {
             this.InitializeComponent();
@@ -63,25 +54,16 @@ namespace MagicPacketSender
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif           
-
-            Frame rootFrame = Window.Current.Content as Frame;
-
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
+            Frame rootFrame = Window.Current.Content as Frame;            
             if (rootFrame == null)
-            {
-                // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
-
-                // TODO: change this value to a cache size that is appropriate for your application
+            {                
+                rootFrame = new Frame();                
                 rootFrame.CacheSize = 1;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     // TODO: Load state from previously suspended application
-                }
-
-                // Place the frame in the current Window
+                }                
                 Window.Current.Content = rootFrame;
             }
 
@@ -105,18 +87,12 @@ namespace MagicPacketSender
 
                 // Hide the status bar
                 await statusBar.HideAsync();
-#endif
-               
-                // When the navigation stack isn't restored navigate to the first page,
-                // configuring the new page by passing required information as a navigation
-                // parameter
+#endif                               
                 if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
                 }
-            }
-
-            // Ensure the current window is active
+            }            
             Window.Current.Activate();
         }
 
