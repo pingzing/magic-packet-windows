@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="NeilApps.MagicPacket.Windows8" Publisher="CN=Image 17" Version="1.0.0.0" />
+  <Identity Name="10707NeilApps.MagicPacketSender" Publisher="CN=B458EF9C-1F3A-4DD2-AB1A-76FB5056CF30" Version="1.1.0.0" />
   <Properties>
     <DisplayName>Magic Packet Sender</DisplayName>
     <PublisherDisplayName>NeilApps</PublisherDisplayName>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="MagicPacketSender.Windows.App">
-      <m2:VisualElements DisplayName="Magic Packet Sender" Square150x150Logo="Assets\Square150x150Logo.png" Square30x30Logo="Assets\Square30x30Logo.png" Description="A basic app to send a Wake on LAN magick packet." ForegroundText="light" BackgroundColor="#000000">
+      <m2:VisualElements DisplayName="Magic Packet Sender" Square150x150Logo="Assets\Square150x150Logo.png" Square30x30Logo="Assets\Square30x30Logo.png" Description="A basic app to send a Wake on LAN magic packet." ForegroundText="light" BackgroundColor="#000000">
         <m2:DefaultTile ShortName="Magic Packet Sender" Wide310x150Logo="Assets\Wide310x150Logo.png" DefaultSize="square150x150Logo" Square70x70Logo="Assets\Square70x70Logo.png" Square310x310Logo="Assets\Square310x310Logo.png">
           <m2:ShowNameOnTiles>
             <m2:ShowOn Tile="square150x150Logo" />

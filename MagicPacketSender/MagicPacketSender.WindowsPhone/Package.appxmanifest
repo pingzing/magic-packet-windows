@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="NeilApps.MagicPacket.WindowsPhone8" Publisher="CN=Image 17" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="08f6581e-8ea4-451c-b107-0c37aa29c90a" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="10707NeilApps.MagicPacketSender" Publisher="CN=B458EF9C-1F3A-4DD2-AB1A-76FB5056CF30" Version="1.1.0.0" />
+  <mp:PhoneIdentity PhoneProductId="d965dc9d-e1de-4d8a-8839-19d6cba532d5" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Magic Packet Sender</DisplayName>
     <PublisherDisplayName>NeilApps</PublisherDisplayName>
